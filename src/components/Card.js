@@ -3,7 +3,7 @@ import ReactCardFlip from 'react-card-flip';
 import frontCard from '../images/front.jpg';
 import '../style/style.css';
 
-const Card = ({ src, id }) => {
+const Card = ({ src, id, parentCallback }) => {
 	const [ isFlipped, setFlipped ] = useState(false);
 	const [ flipSpeedFrontToBack, setFlipSpeedFrontToBack ] = useState(0.4);
 	const [ flipSpeedBackToFront, setFlipSpeedBackToFront ] = useState(0.4);
@@ -11,10 +11,11 @@ const Card = ({ src, id }) => {
 
 	const handleClick = (e) => {
 		e.preventDefault();
-		setFlipped((isFlipped) => !isFlipped);
+		console.log(isFlipped);
+		setFlipped(!isFlipped);
+		parentCallback(isFlipped);
 	};
 
-	// const { src, id } = this.props;
 	return (
 		<ReactCardFlip
 			key={id}

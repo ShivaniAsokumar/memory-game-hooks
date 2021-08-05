@@ -4,9 +4,18 @@ import ReactCardFlip from 'react-card-flip';
 import Card from './Card';
 
 const GameBoard = ({ urls }) => {
-	console.log(urls);
+	// Display PAIRS of cards.
+	// Cards need to be in random order.
+	// User clicks two cards, they both have to flip.
+	// How do I access isFlipped from Card.
+	const callBack = (flipped) => {
+		return flipped;
+	};
+
 	return (
-		<div className="flex-container">{urls.map((url, index) => <Card key={index} src={url.src} id={url.id} />)}</div>
+		<div className="flex-container">
+			{urls.map((url, index) => <Card key={index} src={url.src} id={url.id} parentCallback={callBack} />)}
+		</div>
 	);
 };
 
