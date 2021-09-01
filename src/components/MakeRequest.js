@@ -16,7 +16,7 @@ const MakeRequest = () => {
 				params: {
 					query: 'background',
 					page: '1',
-					per_page: '24',
+					per_page: '12',
 					orientation: 'squarish'
 				},
 				headers: {
@@ -45,13 +45,16 @@ const MakeRequest = () => {
 	if (playGame === true) {
 		opacity = '0.5';
 	}
+
+	const resultUrls = [ ...urls, ...urls ];
+
 	return (
 		<div className="flex-container">
 			<button className="game-btn" onClick={handleClick} disabled={playGame} style={{ opacity }}>
 				Play Game
 			</button>
 
-			<GameBoard urls={urls} />
+			<GameBoard urls={resultUrls} />
 		</div>
 	);
 };

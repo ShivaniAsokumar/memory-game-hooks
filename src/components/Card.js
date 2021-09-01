@@ -3,18 +3,10 @@ import ReactCardFlip from 'react-card-flip';
 import frontCard from '../images/front.jpg';
 import '../style/style.css';
 
-const Card = ({ src, id, parentCallback }) => {
-	const [ isFlipped, setFlipped ] = useState(false);
+const Card = ({ src, id, isFlipped, flipcard, index }) => {
 	const [ flipSpeedFrontToBack, setFlipSpeedFrontToBack ] = useState(0.4);
 	const [ flipSpeedBackToFront, setFlipSpeedBackToFront ] = useState(0.4);
-	const [ flipDirection, setFlipDirection ] = 'horizontal';
-
-	const handleClick = (e) => {
-		e.preventDefault();
-		console.log(isFlipped);
-		setFlipped(!isFlipped);
-		parentCallback(isFlipped);
-	};
+	const [ flipDirection, setFlipDirection ] = useState('horizontal');
 
 	return (
 		<ReactCardFlip
@@ -23,14 +15,13 @@ const Card = ({ src, id, parentCallback }) => {
 			flipDirection={flipDirection}
 			flipSpeedBackToFront={flipSpeedBackToFront}
 			flipSpeedFrontToBack={flipSpeedFrontToBack}>
-			<div className="flex-item" onClick={handleClick}>
+			<div className="flex-item" onClick={() => flipcard(index)}>
 				<img className="front-image" src={frontCard} />
 			</div>
-			<div className="flex-item" onClick={handleClick}>
+			<div className="flex-item">
 				<img src={src} alt="back" />
 			</div>
 		</ReactCardFlip>
 	);
 };
-
 export default Card;
