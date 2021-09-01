@@ -9,17 +9,23 @@ const GameBoard = ({ urls }) => {
 
 	const flipcard = (index) => {
 		setOpenedCard((opened) => [ ...opened, index ]);
-		if (openedCard < 2) return;
-
-		const firstMatched = urls[openedCard[0]];
-		const secondMatched = urls[openedCard[1]];
-
-		if (secondMatched && firstMatched.id === secondMatched.id) {
-			setMatched([ ...matched, firstMatched.id ]);
-		}
-
-		if (openedCard.length === 2) setTimeout(() => setOpenedCard([]), 1000);
 	};
+
+	useEffect(
+		() => {
+			if (openedCard.length < 2) return;
+
+			const firstMatched = urls[openedCard[0]];
+			const secondMatched = urls[openedCard[1]];
+
+			if (secondMatched && firstMatched.id === secondMatched.id) {
+				setMatched([ ...matched, firstMatched.id ]);
+			}
+
+			if (openedCard.length === 2) setTimeout(() => setOpenedCard([]), 1000);
+		},
+		[ openedCard ]
+	);
 
 	return (
 		<div className="flex-container">

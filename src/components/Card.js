@@ -4,9 +4,9 @@ import frontCard from '../images/front.jpg';
 import '../style/style.css';
 
 const Card = ({ src, id, isFlipped, flipcard, index }) => {
-	const [ flipSpeedFrontToBack, setFlipSpeedFrontToBack ] = useState(0.4);
-	const [ flipSpeedBackToFront, setFlipSpeedBackToFront ] = useState(0.4);
-	const [ flipDirection, setFlipDirection ] = useState('horizontal');
+	const flipSpeedFrontToBack = 0.4;
+	const flipSpeedBackToFront = 0.4;
+	const flipDirection = 'horizontal';
 
 	return (
 		<ReactCardFlip

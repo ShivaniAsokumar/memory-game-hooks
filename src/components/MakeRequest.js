@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
-import GameBoard from './GameBoard';
+import React, { useState, useEffect } from 'react';
+import ReactCardFlip from 'react-card-flip';
 import axios from 'axios';
+import frontCard from '../images/front.jpg';
 import '../style/style.css';
 
 const MakeRequest = () => {
 	const [ urls, setUrls ] = useState([]);
 	const [ playGame, setPlayGame ] = useState(false);
+
+	const [ openedCard, setOpenedCard ] = useState([]);
+	const [ matched, setMatched ] = useState([]);
+
+	const flipSpeedFrontToBack = 0.4;
+	const flipSpeedBackToFront = 0.4;
+	const flipDirection = 'horizontal';
 
 	let opacity;
 	const handleClick = async (e) => {
@@ -46,7 +54,27 @@ const MakeRequest = () => {
 		opacity = '0.5';
 	}
 
-	const resultUrls = [ ...urls, ...urls ];
+	const images = [ ...urls, ...urls ];
+
+	const flipcard = (index) => {
+		setOpenedCard((opened) => [ ...opened, index ]);
+	};
+
+	useEffect(
+		() => {
+			if (openedCard.length < 2) return;
+
+			const firstMatched = images[openedCard[0]];
+			const secondMatched = images[openedCard[1]];
+
+			if (secondMatched && firstMatched.id === secondMatched.id) {
+				setMatched([ ...matched, firstMatched.id ]);
+			}
+
+			if (openedCard.length === 2) setTimeout(() => setOpenedCard([]), 1000);
+		},
+		[ openedCard ]
+	);
 
 	return (
 		<div className="flex-container">
@@ -54,7 +82,35 @@ const MakeRequest = () => {
 				Play Game
 			</button>
 
-			<GameBoard urls={resultUrls} />
+			<div className="flex-container">
+				{images.map((url, index) => {
+					let isFlipped = false;
+
+					if (openedCard.includes(index)) {
+						isFlipped = true;
+					}
+
+					if (matched.includes(url.id)) {
+						isFlipped = true;
+					}
+
+					return (
+						<ReactCardFlip
+							key={url.id}
+							isFlipped={isFlipped}
+							flipDirection={flipDirection}
+							flipSpeedBackToFront={flipSpeedBackToFront}
+							flipSpeedFrontToBack={flipSpeedFrontToBack}>
+							<div className="flex-item" onClick={() => flipcard(index)}>
+								<img className="front-image" src={frontCard} alt="front" />
+							</div>
+							<div className="flex-item">
+								<img src={url.src} alt="back" />
+							</div>
+						</ReactCardFlip>
+					);
+				})}
+			</div>
 		</div>
 	);
 };
