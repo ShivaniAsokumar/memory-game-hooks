@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ReactCardFlip from 'react-card-flip';
 import axios from 'axios';
 import frontCard from '../images/front.jpg';
@@ -14,6 +14,23 @@ const MakeRequest = () => {
 	const flipSpeedFrontToBack = 0.4;
 	const flipSpeedBackToFront = 0.4;
 	const flipDirection = 'horizontal';
+
+	const shuffle = (array) => {
+		let currentIndex = array.length,
+			randomIndex;
+
+		// While there remain elements to shuffle...
+		while (currentIndex != 0) {
+			// Pick a remaining element...
+			randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex--;
+
+			// And swap it with the current element.
+			[ array[currentIndex], array[randomIndex] ] = [ array[randomIndex], array[currentIndex] ];
+		}
+
+		return array;
+	};
 
 	let opacity;
 	const handleClick = async (e) => {
@@ -32,17 +49,21 @@ const MakeRequest = () => {
 				}
 			})
 			.then((res) => {
-				const results = res.data.results;
-				let urlObject = {};
+				const results = res.data.results; // Getting the data from the API request
 
-				for (let image of results) {
+				// Duplicating results so that each card has a matching pair
+				const pairsOfCards = [ ...results, ...results ];
+				shuffle(pairsOfCards);
+
+				// Iterating through the cards and adding their src and id to the state
+				let urlObject = {};
+				for (let image of pairsOfCards) {
 					urlObject = { src: image.urls.small, id: image.id };
 					const addUrls = [ ...urls ];
 					addUrls.push(urlObject);
 					setUrls((urls) => urls.concat(addUrls));
 				}
-				const copy = [ ...urls ];
-				setUrls((urls) => urls.concat(copy));
+				// Helps disable the Play Game button
 				setPlayGame(!playGame);
 			})
 			.catch((err) => {
@@ -54,8 +75,6 @@ const MakeRequest = () => {
 		opacity = '0.5';
 	}
 
-	const images = [ ...urls, ...urls ];
-
 	const flipcard = (index) => {
 		setOpenedCard((opened) => [ ...opened, index ]);
 	};
@@ -64,8 +83,8 @@ const MakeRequest = () => {
 		() => {
 			if (openedCard.length < 2) return;
 
-			const firstMatched = images[openedCard[0]];
-			const secondMatched = images[openedCard[1]];
+			const firstMatched = urls[openedCard[0]];
+			const secondMatched = urls[openedCard[1]];
 
 			if (secondMatched && firstMatched.id === secondMatched.id) {
 				setMatched([ ...matched, firstMatched.id ]);
@@ -83,7 +102,7 @@ const MakeRequest = () => {
 			</button>
 
 			<div className="flex-container">
-				{images.map((url, index) => {
+				{urls.map((url, index) => {
 					let isFlipped = false;
 
 					if (openedCard.includes(index)) {
@@ -96,7 +115,7 @@ const MakeRequest = () => {
 
 					return (
 						<ReactCardFlip
-							key={url.id}
+							key={url.index}
 							isFlipped={isFlipped}
 							flipDirection={flipDirection}
 							flipSpeedBackToFront={flipSpeedBackToFront}
