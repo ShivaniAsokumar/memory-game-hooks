@@ -11,8 +11,8 @@ const MakeRequest = () => {
 	const [ openedCard, setOpenedCard ] = useState([]);
 	const [ matched, setMatched ] = useState([]);
 
-	const flipSpeedFrontToBack = 0.4;
-	const flipSpeedBackToFront = 0.4;
+	const flipSpeedFrontToBack = 0.3;
+	const flipSpeedBackToFront = 0.3;
 	const flipDirection = 'horizontal';
 
 	const shuffle = (array) => {
@@ -86,11 +86,11 @@ const MakeRequest = () => {
 			const firstMatched = urls[openedCard[0]];
 			const secondMatched = urls[openedCard[1]];
 
-			if (secondMatched && firstMatched.id === secondMatched.id) {
+			// If error, change if to secondMatched && ...
+			if (firstMatched.id === secondMatched.id) {
 				setMatched([ ...matched, firstMatched.id ]);
 			}
-
-			if (openedCard.length === 2) setTimeout(() => setOpenedCard([]), 1000);
+			setTimeout(() => setOpenedCard([]), 1000);
 		},
 		[ openedCard ]
 	);
