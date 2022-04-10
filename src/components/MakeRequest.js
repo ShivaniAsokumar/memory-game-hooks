@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactCardFlip from 'react-card-flip';
 import axios from 'axios';
 import frontCard from '../images/front.jpg';
 import '../style/style.css';
 
 const MakeRequest = () => {
-	const [ urls, setUrls ] = useState([]);
-	const [ playGame, setPlayGame ] = useState(false);
+	const [ urls, setUrls ] = useState([]); // collect urls from API request
+	const [ playGame, setPlayGame ] = useState(false); // button is enabled or disabled
 
-	const [ openedCard, setOpenedCard ] = useState([]);
+	const [ openedCard, setOpenedCard ] = useState([]); // index of cards that are flipped open
 	const [ matched, setMatched ] = useState([]);
 
 	const flipSpeedFrontToBack = 0.3;
@@ -32,7 +32,8 @@ const MakeRequest = () => {
 		return array;
 	};
 
-	let opacity;
+	let opacity; // Play Game
+
 	const handleClick = async (e) => {
 		e.preventDefault();
 
@@ -59,9 +60,10 @@ const MakeRequest = () => {
 				let urlObject = {};
 				for (let image of pairsOfCards) {
 					urlObject = { src: image.urls.small, id: image.id };
+
 					const addUrls = [ ...urls ];
 					addUrls.push(urlObject);
-					setUrls((urls) => urls.concat(addUrls));
+					setUrls((urls) => urls.concat(addUrls)); // Add the urls to the state
 				}
 				// Helps disable the Play Game button
 				setPlayGame(!playGame);
@@ -90,6 +92,7 @@ const MakeRequest = () => {
 			if (firstMatched.id === secondMatched.id) {
 				setMatched([ ...matched, firstMatched.id ]);
 			}
+
 			setTimeout(() => setOpenedCard([]), 1000);
 		},
 		[ openedCard ]
