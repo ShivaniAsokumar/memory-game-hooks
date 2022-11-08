@@ -2,15 +2,14 @@
 This is a Memory Game that allows users to find matching pairs of cards on the Gameboard. The images on the page are from the Unsplash API. 
 
 ---
+### Website URL
+* [https://shivani-asokumar-memory-game.netlify.app/](https://shivani-asokumar-memory-game.netlify.app/)
 
 ### How to run the app
 1. Clone the app locally using the following command `git clone https://github.com/ShivaniAsokumar/memory-game-hooks.git`
 2. Once inside the directory, run `npm install`
 3. Run `npm start`
 4. Navigate to `http://localhost:3000` to play the game
-
-### Website URL
-* [https://shivani-asokumar-memory-game.netlify.app/](https://shivani-asokumar-memory-game.netlify.app/)
 
 ### How the game works
 1. User clicks on `Play Game` in order to load the gameboard
